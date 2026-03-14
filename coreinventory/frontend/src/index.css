@@ -14,6 +14,23 @@
   ::-webkit-scrollbar-track { background: #16213e; }
   ::-webkit-scrollbar-thumb { background: #374151; border-radius: 3px; }
   ::-webkit-scrollbar-thumb:hover { background: #4b5563; }
+
+  /* Dark dropdown options - fixes white background on selects */
+  select {
+    background-color: #0f0f23;
+    color: #f1f0ec;
+  }
+  select option {
+    background-color: #0f0f23;
+    color: #f1f0ec;
+    padding: 8px 12px;
+  }
+  select option:hover,
+  select option:focus,
+  select option:checked {
+    background-color: #1a1a2e;
+    color: #e8c547;
+  }
 }
 
 @layer components {
@@ -21,6 +38,17 @@
     @apply w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-white/30 
            focus:outline-none focus:border-brand-500 focus:ring-1 focus:ring-brand-500 
            transition-all duration-200 text-sm;
+    background-color: rgba(255,255,255,0.05);
+    color: #f1f0ec;
+  }
+  /* Ensure select keeps dark bg when used with input-field class */
+  select.input-field {
+    background-color: #0d0d1f;
+    color: #f1f0ec;
+  }
+  select.input-field option {
+    background-color: #0d0d1f;
+    color: #f1f0ec;
   }
   .btn-primary {
     @apply bg-brand-500 hover:bg-brand-400 text-brand-900 font-semibold px-6 py-3 rounded-xl 
@@ -36,7 +64,7 @@
            px-5 py-2.5 rounded-xl transition-all duration-200 active:scale-95 text-sm;
   }
   .card {
-    @apply bg-white/5 border border-white/10 rounded-2xl p-6 backdrop-blur-sm;
+    @apply bg-white/5 border border-white/10 rounded-2xl p-4 backdrop-blur-sm;
   }
   .badge-green  { @apply bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 text-xs px-2.5 py-1 rounded-full font-medium; }
   .badge-amber  { @apply bg-amber-500/10 text-amber-400 border border-amber-500/20 text-xs px-2.5 py-1 rounded-full font-medium; }

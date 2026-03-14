@@ -3,16 +3,14 @@ import { NavLink, useNavigate } from 'react-router-dom'
 import {
   LayoutDashboard, Package, ArrowDownToLine, ArrowUpFromLine,
   ArrowLeftRight, ClipboardList, History, Settings,
-  ChevronDown, LogOut, User, Menu, X, Package2, AlertTriangle
+  ChevronDown, LogOut, User, Menu, Package2, AlertTriangle, BarChart2
 } from 'lucide-react'
 import toast from 'react-hot-toast'
 import { useAuth } from '../../context/AuthContext'
 
 const NAV = [
   { label: 'Dashboard', icon: LayoutDashboard, to: '/dashboard' },
-  {
-    label: 'Products', icon: Package, to: '/products',
-  },
+  { label: 'Products', icon: Package, to: '/products' },
   {
     label: 'Operations', icon: ClipboardList, children: [
       { label: 'Receipts', icon: ArrowDownToLine, to: '/operations/receipts' },
@@ -21,18 +19,19 @@ const NAV = [
       { label: 'Adjustments', icon: AlertTriangle, to: '/operations/adjustments' },
     ]
   },
+  { label: 'Analysis', icon: BarChart2, to: '/analysis' },
   { label: 'Move History', icon: History, to: '/history' },
   { label: 'Settings', icon: Settings, to: '/settings' },
 ]
 
 function NavItem({ item, collapsed }) {
-  const [open, setOpen] = useState(false)
+  const [open, setOpen] = useState(true)
 
   if (item.children) {
     return (
       <div>
         <button onClick={() => setOpen(!open)}
-          className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-white/50 hover:text-white hover:bg-white/5 transition-all duration-200 text-sm font-medium group">
+          className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-white/50 hover:text-white hover:bg-white/5 transition-all duration-200 text-sm font-medium">
           <item.icon size={18} className="shrink-0" />
           {!collapsed && <>
             <span className="flex-1 text-left">{item.label}</span>
@@ -85,7 +84,7 @@ export default function AppLayout({ children }) {
   const SidebarContent = () => (
     <div className="flex flex-col h-full">
       {/* Logo */}
-      <div className={`flex items-center gap-3 px-4 py-5 border-b border-white/5 ${collapsed ? 'justify-center' : ''}`}>
+      <div className={`flex items-center gap-3 px-4 py-5 border-b border-white/5 shrink-0 ${collapsed ? 'justify-center' : ''}`}>
         <div className="w-8 h-8 bg-brand-500/10 border border-brand-500/30 rounded-lg flex items-center justify-center shrink-0">
           <Package2 size={16} className="text-brand-500" />
         </div>
@@ -96,13 +95,13 @@ export default function AppLayout({ children }) {
         )}
       </div>
 
-      {/* Nav */}
+      {/* Nav - scrollable if needed but fixed */}
       <nav className="flex-1 p-3 space-y-0.5 overflow-y-auto">
         {NAV.map(item => <NavItem key={item.label} item={item} collapsed={collapsed} />)}
       </nav>
 
       {/* Profile */}
-      <div className="p-3 border-t border-white/5">
+      <div className="p-3 border-t border-white/5 shrink-0">
         <div className="relative">
           <button onClick={() => setProfileOpen(!profileOpen)}
             className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-white/5 transition-all duration-200">
@@ -136,31 +135,32 @@ export default function AppLayout({ children }) {
   )
 
   return (
-    <div className="min-h-screen bg-brand-900 flex">
-      {/* Desktop Sidebar */}
-      <aside className={`hidden lg:flex flex-col bg-[#0f0f23] border-r border-white/5 transition-all duration-300 shrink-0 ${collapsed ? 'w-16' : 'w-60'}`}>
+    // KEY FIX: h-screen overflow-hidden on root so sidebar never scrolls with content
+    <div className="h-screen bg-brand-900 flex overflow-hidden">
+
+      {/* Desktop Sidebar - fixed height, never scrolls */}
+      <aside className={`hidden lg:flex flex-col bg-[#0f0f23] border-r border-white/5 transition-all duration-300 shrink-0 h-full relative ${collapsed ? 'w-16' : 'w-60'}`}>
         <SidebarContent />
         <button onClick={() => setCollapsed(!collapsed)}
-          className="absolute left-0 top-1/2 -translate-y-1/2 w-5 h-10 bg-[#0f0f23] border border-white/10 rounded-r-lg flex items-center justify-center text-white/30 hover:text-white transition-colors"
-          style={{ left: collapsed ? '64px' : '240px' }}>
-          <ChevronDown size={12} className={`rotate-90 transition-transform ${collapsed ? 'rotate-[270deg]' : 'rotate-90'}`} />
+          className="absolute -right-3 top-1/2 -translate-y-1/2 w-6 h-6 bg-[#0f0f23] border border-white/10 rounded-full flex items-center justify-center text-white/30 hover:text-white transition-colors z-10">
+          <ChevronDown size={11} className={`transition-transform duration-300 ${collapsed ? '-rotate-90' : 'rotate-90'}`} />
         </button>
       </aside>
 
-      {/* Mobile Sidebar */}
+      {/* Mobile Sidebar overlay */}
       {mobileOpen && (
         <div className="lg:hidden fixed inset-0 z-50 flex">
           <div className="absolute inset-0 bg-black/60" onClick={() => setMobileOpen(false)} />
-          <aside className="relative w-60 bg-[#0f0f23] border-r border-white/5 flex flex-col">
+          <aside className="relative w-60 bg-[#0f0f23] border-r border-white/5 flex flex-col h-full">
             <SidebarContent />
           </aside>
         </div>
       )}
 
-      {/* Main */}
-      <main className="flex-1 flex flex-col min-w-0 overflow-hidden">
+      {/* Main content area - scrolls independently */}
+      <main className="flex-1 flex flex-col min-w-0 h-full overflow-hidden">
         {/* Mobile topbar */}
-        <div className="lg:hidden flex items-center justify-between px-4 py-3 border-b border-white/5 bg-[#0f0f23]">
+        <div className="lg:hidden flex items-center justify-between px-4 py-3 border-b border-white/5 bg-[#0f0f23] shrink-0">
           <button onClick={() => setMobileOpen(true)} className="text-white/60 hover:text-white">
             <Menu size={20} />
           </button>
@@ -170,7 +170,8 @@ export default function AppLayout({ children }) {
           </div>
         </div>
 
-        <div className="flex-1 overflow-auto p-4 lg:p-6 animate-fade-in">
+        {/* Page content - only this scrolls */}
+        <div className="flex-1 overflow-y-auto p-4 lg:p-6 animate-fade-in">
           {children}
         </div>
       </main>

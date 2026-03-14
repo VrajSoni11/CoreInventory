@@ -12,6 +12,9 @@ import Operations from './pages/operations/Operations'
 import History from './pages/operations/History'
 import Settings from './pages/settings/Settings'
 import Profile from './pages/profile/Profile'
+import Analysis from './pages/analysis/Analysis'
+import Landing from './pages/landing/Landing'
+import HelpBot from './components/chatbot/HelpBot'
 
 export default function App() {
   return (
@@ -31,8 +34,10 @@ export default function App() {
             error: { iconTheme: { primary: '#f87171', secondary: '#1a1a2e' } },
           }}
         />
+        <HelpBot />
         <Routes>
           {/* Public */}
+          <Route path="/" element={<Landing />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
@@ -43,12 +48,13 @@ export default function App() {
             <Route path="/products" element={<Products />} />
             <Route path="/operations/:type" element={<Operations />} />
             <Route path="/history" element={<History />} />
+            <Route path="/analysis" element={<Analysis />} />
             <Route path="/settings" element={<Settings />} />
             <Route path="/profile" element={<Profile />} />
           </Route>
 
           {/* Redirect */}
-          <Route path="/" element={<Navigate to="/dashboard" replace />} />
+          {/* <Route path="/" element={<Navigate to="/dashboard" replace />} /> */}
           <Route path="*" element={<Navigate to="/dashboard" replace />} />
         </Routes>
       </BrowserRouter>
