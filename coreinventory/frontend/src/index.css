@@ -1,0 +1,47 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * { box-sizing: border-box; }
+  body {
+    font-family: 'DM Sans', system-ui, sans-serif;
+    background-color: #1a1a2e;
+    color: #f1f0ec;
+    -webkit-font-smoothing: antialiased;
+  }
+  ::-webkit-scrollbar { width: 6px; height: 6px; }
+  ::-webkit-scrollbar-track { background: #16213e; }
+  ::-webkit-scrollbar-thumb { background: #374151; border-radius: 3px; }
+  ::-webkit-scrollbar-thumb:hover { background: #4b5563; }
+}
+
+@layer components {
+  .input-field {
+    @apply w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-white/30 
+           focus:outline-none focus:border-brand-500 focus:ring-1 focus:ring-brand-500 
+           transition-all duration-200 text-sm;
+  }
+  .btn-primary {
+    @apply bg-brand-500 hover:bg-brand-400 text-brand-900 font-semibold px-6 py-3 rounded-xl 
+           transition-all duration-200 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed
+           disabled:active:scale-100 text-sm;
+  }
+  .btn-secondary {
+    @apply bg-white/5 hover:bg-white/10 text-white border border-white/10 font-medium px-5 py-2.5 
+           rounded-xl transition-all duration-200 active:scale-95 text-sm;
+  }
+  .btn-danger {
+    @apply bg-red-500/10 hover:bg-red-500/20 text-red-400 border border-red-500/20 font-medium 
+           px-5 py-2.5 rounded-xl transition-all duration-200 active:scale-95 text-sm;
+  }
+  .card {
+    @apply bg-white/5 border border-white/10 rounded-2xl p-6 backdrop-blur-sm;
+  }
+  .badge-green  { @apply bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 text-xs px-2.5 py-1 rounded-full font-medium; }
+  .badge-amber  { @apply bg-amber-500/10 text-amber-400 border border-amber-500/20 text-xs px-2.5 py-1 rounded-full font-medium; }
+  .badge-red    { @apply bg-red-500/10 text-red-400 border border-red-500/20 text-xs px-2.5 py-1 rounded-full font-medium; }
+  .badge-blue   { @apply bg-blue-500/10 text-blue-400 border border-blue-500/20 text-xs px-2.5 py-1 rounded-full font-medium; }
+  .badge-purple { @apply bg-purple-500/10 text-purple-400 border border-purple-500/20 text-xs px-2.5 py-1 rounded-full font-medium; }
+  .badge-gray   { @apply bg-white/5 text-white/50 border border-white/10 text-xs px-2.5 py-1 rounded-full font-medium; }
+}
